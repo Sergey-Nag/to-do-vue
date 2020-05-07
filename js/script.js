@@ -54,7 +54,8 @@ const app = new Vue({
                     },
                 ]
             }
-        ]
+        ],
+      editNote: false
    },
    created: function () {
       this.currpage = this.pages.home
@@ -77,7 +78,12 @@ const app = new Vue({
          this.popup = false
       },
       pushNote(data) {
-
+         this.notes.push(data);
+      },
+      editPage: function(data) {
+         this.currpage = 'note-page';
+         this.editNote = this.notes[data.key];
+         window.history.pushState(data, this.editNote.title);
       }
    }
 });

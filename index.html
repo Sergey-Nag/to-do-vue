@@ -19,36 +19,16 @@
             <template v-if="currpage == 'main-page'">
                <h1 class="title">Мои заметки <span class="notes-length">{{ notes.length }}</span></h1>
 
-               <note @show-popup="showPopup" v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
+               <note @show-popup="showPopup" @edit-note="editPage" v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
 
                <add-note @add-note="pushNote"></add-note>
             </template>
 
 
             <template v-else-if="currpage == 'note-page'">
-               <h1 class="title">Заметка <span class="notes-length">{{ notes.length }}</span></h1>
+               <h1 class="title">Заметка <span class="notes-length"></span></h1>
 
-               <note v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items"></note>
-
-               <div class="note">
-                  <div class="note-head">
-                     <h4>Test</h4>
-                  </div>
-                  <div class="note-body">
-                     <p>asdjasljdfhkas</p>
-                  </div>
-               </div>
-               <div class="note">
-                  <div class="note-head">
-                     <h4>Test</h4>
-                  </div>
-                  <div class="note-body">
-                     <ul class="todolist">
-                        <li class=""><input type="checkbox" id="todo-1"> <label for="todo-1">Hello</label></li>
-                        <li class=""><input type="checkbox" id="todo-2"> <label for="todo-2">Hello</label></li>
-                     </ul>
-                  </div>
-               </div>
+               <add-note @add-note="pushNote" :edit="editNote"></add-note>
 
             </template>
 

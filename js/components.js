@@ -32,6 +32,11 @@ Vue.component('note', {
                id: key
             }
          })
+      },
+      edit_note: function(key) {
+         this.$emit('edit-note', {
+            key: key
+         });
       }
    },
    computed: {
@@ -81,6 +86,7 @@ Vue.component('note', {
 });
 
 Vue.component('add-note', {
+   props: ['edit'],
    data: function () {
       return {
          isActive: false,
@@ -91,7 +97,9 @@ Vue.component('add-note', {
       }
    },
    updated: function () {
-
+      if (this.edit) {
+         this.isActive = true;
+      }
    },
    methods: {
       // Add new item to list
@@ -140,6 +148,16 @@ Vue.component('add-note', {
       },
       removeItem: function(i) {
          this.newItems.splice(i, 1);
+      },
+      addNote: function() {
+         if (this.newNoteTitle != '' && this.newItems.length > 0) {
+            this.$emit('add-note', {
+               title: this.newNoteTitle,
+               todo_items: this.newItems
+            });
+            this.newNoteTitle = '';
+            this.newItems = [];
+         }
       }
    },
    computed: {},
@@ -150,30 +168,28 @@ Vue.component('add-note', {
                         <ul class="todolist">
                            <li class="item" v-for="(item, i) in newItems">
                                  <label 
-                                    :for="'todo-new'+i">
+                                    :for="'todo-new'+i"
+                                    v-on:click="item.isDone = !item.isDone">
                                     <input
                                         type="checkbox"
                                         :id="'todo-new'+i"
                                         :checked="item.isDone">
-
-                                        {{item.editing? '' : item.title}}
-
-                                       <input v-show="item.editing" id="add-item-input" v-on:keyup.enter="checkItem" v-on:keyup.delete.prevent="returnItem" v-model="item.title" type="text" class="form-input item" placeholder="+ Добавить пункт">
+                                        {{item.title}}
 
                                  </label>
                                  <button class="btn btn-icon" v-on:click="editItem(i)">
                                        <i class="fa fa-pencil" aria-hidden="true"></i>
                                  </button>
                                  <button class="btn btn-icon" v-on:click="removeItem(i)">
-                                       <i class="fa fa-close" aria-hidden="true"></i>
-                                  </button>
+                                    <i class="fa fa-close" aria-hidden="true"></i>
+                                 </button>
                            </li>
 
                             <li class="item" >
                                 <input type="checkbox" disabled><input id="add-item-input" v-on:keyup.enter="checkItem" v-on:keyup.delete.prevent="returnItem" v-model="newItem" type="text" class="form-input item" placeholder="+ Добавить пункт">
                                  <button class="btn btn-icon" v-on:click="checkItem">
-                                       <i class="fa fa-plus" aria-hidden="true"></i>
-                                  </button>
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                 </button>
                             </li>
 
                            <li v-if="newItem != ''" class="item">
@@ -184,7 +200,7 @@ Vue.component('add-note', {
                         <span class="hint">Добавляйте новые элементы <code>Enter</code>, возвращайтесь к предыдущим <code>Backspace</code></span>
                         <div class="note-footer">
                             <button class="btn cancel" v-on:click="cancel()"><i class="fa fa-close" aria-hidden="true"></i> Отмена</button>
-                            <button class="btn confirm" :disabled="!isReadyForConfirm"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</button>
+                            <button class="btn confirm" :disabled="!isReadyForConfirm" v-on:click="addNote()"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</button>
                         </div>
                     </div>
                     <div v-else v-on:click.prevent="isActive = true">
