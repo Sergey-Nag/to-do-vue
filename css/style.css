@@ -63,7 +63,7 @@ body {
 
 .note.add-btn:focus,
 .note.add-btn:hover,
-.control-side .btn:hover {
+.btn.btn-icon:hover {
    opacity: 1;
 }
 
@@ -111,10 +111,10 @@ body {
    display: none;
 }
 
-.control-side .btn {
+.btn.btn-icon  {
    opacity: .5;
 }
-.control-side .btn  i {
+.btn.btn-icon i {
    font-size: 1.25em;
 }
 
@@ -153,6 +153,10 @@ body {
    background: var(--blue);
    color: #fff;
 }
+.btn:disabled {
+   cursor: default;
+   opacity: .7;
+}
 
 .form-input {
    width: 100%;
@@ -175,4 +179,16 @@ body {
 .form-wrapp .note-footer {
    padding-top: .5em;
    border-top: solid 1px var(--grey-border);
+}
+
+span.hint {
+   color: var(--blue);
+   font-size: .8em;
+}
+span.hint code {
+   opacity: .8;
+   background: var(--blue);
+   padding: 2px 5px;
+   border-radius: 2px;
+   color: #fff;
 }
