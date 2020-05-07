@@ -1,72 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To Do Vue</title>
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>To Do Vue</title>
+   <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-    <div id="app">
-        <popup v-show="popup" :data-popup="popup" @done-popup="donePopup" @close-popup="clearPopup" ></popup>
-        <div class="main">
-            <div class="notes-wrapp" id="view">
-                <template id="main-page"  v-if="currpage == 'main-page'">
-                    <h1 class="title">Мои заметки <span class="notes-length">{{ notes.length }}</span></h1>
+   <div id="app">
 
-                <note @show-popup="showPopup" v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
+      <popup v-show="popup" :data-popup="popup" @done-popup="donePopup" @close-popup="clearPopup"></popup>
 
-                <div class="note add-btn active">
-                    <div class="form-wrapp">
-                        <h3>Добавление заметки</h3>
-                        <input type="text" class="form-input title" placeholder="Заголовок">
-                        <ul class="todolist">
-                            <li>
-                                <input type="checkbox"><input type="text" class="form-input item" placeholder="+ Добавить пункт">
-                            </li>
-                        </ul>
+      <div class="main">
+         <div class="notes-wrapp" id="view">
+            <template v-if="currpage == 'main-page'">
+               <h1 class="title">Мои заметки <span class="notes-length">{{ notes.length }}</span></h1>
 
-                    </div>
-                </div>
+               <note @show-popup="showPopup" v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
 
-                <add-note-button @add-note="pushNote"></add-note-button>
+               <add-note-button @add-note="pushNote"></add-note-button>
             </template>
 
 
-            <template id="note-page" v-else-if="currpage == 'note-page'">
-                <h1 class="title">Заметка <span class="notes-length">{{ notes.length }}</span></h1>
+            <template v-else-if="currpage == 'note-page'">
+               <h1 class="title">Заметка <span class="notes-length">{{ notes.length }}</span></h1>
 
-            <note v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items"></note>
+               <note v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items"></note>
 
-            <div class="note">
-                <div class="note-head">
-                    <h4>Test</h4>
-                </div>
-                <div class="note-body">
-                    <p>asdjasljdfhkas</p>
-                </div>
-            </div>
-            <div class="note">
-                <div class="note-head">
-                    <h4>Test</h4>
-                </div>
-                <div class="note-body">
-                    <ul class="todolist">
+               <div class="note">
+                  <div class="note-head">
+                     <h4>Test</h4>
+                  </div>
+                  <div class="note-body">
+                     <p>asdjasljdfhkas</p>
+                  </div>
+               </div>
+               <div class="note">
+                  <div class="note-head">
+                     <h4>Test</h4>
+                  </div>
+                  <div class="note-body">
+                     <ul class="todolist">
                         <li class=""><input type="checkbox" id="todo-1"> <label for="todo-1">Hello</label></li>
                         <li class=""><input type="checkbox" id="todo-2"> <label for="todo-2">Hello</label></li>
-                    </ul>
-                </div>
-            </div>
-            
-        </template>
+                     </ul>
+                  </div>
+               </div>
 
-            </div>
-        </div>
-    </div>
+            </template>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="js/components.js"></script>
-    <script src="js/script.js"></script>
+         </div>
+      </div>
+
+   </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+   <script src="js/components.js"></script>
+   <script src="js/script.js"></script>
 </body>
+
 </html>

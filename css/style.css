@@ -1,148 +1,178 @@
 :root {
-    --grey-text: #8a8a8a;
-    --red: #ff5050;
-    --blue: rgb(95, 132, 255);
+   --grey-text: #8a8a8a;
+   --grey-border: #ececec;
+   --red: #ff5050;
+   --blue: rgb(95, 132, 255);
 }
+
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+   box-sizing: border-box;
 }
+
 html {
-    font-size: 15px;
+   font-size: 15px;
 }
 
 body {
-    background-color: #f2f2f2;
-    color: #424242;
-    font-family: sans-serif;
+   background-color: #f2f2f2;
+   color: #424242;
+   font-family: sans-serif;
 }
 
 .main {
-    max-width: 700px;
-    margin: 0 auto;
-    padding: 1em .5em;
+   max-width: 700px;
+   margin: 0 auto;
+   padding: 1em .5em;
 }
+
 .title {
-    margin: 1em 0;
+   margin: 1em 0;
 }
+
 .notes-length {
-    color: var(--grey-text);
+   color: var(--grey-text);
 }
 
 .note,
 .popup {
-    background-color: #fff;
-    border: #ececec 2px solid;
-    margin-bottom: 1.5em;
-    border-radius: 5px;
-    padding: 1em;
-    margin-bottom: 1.2em;
+   background-color: #fff;
+   border: var(--grey-border) 2px solid;
+   margin-bottom: 1.5em;
+   border-radius: 5px;
+   padding: 1em;
+   margin-bottom: 1.2em;
 }
 
 .note.add-btn {
-    cursor: pointer;
-    border-style: dashed;
-    opacity: .5;
-    padding: 2em;
-    text-align: center;
+   cursor: pointer;
+   border-style: dashed;
+   opacity: .5;
+   padding: 2em;
+   text-align: center;
 }
+
 .note.add-btn.active {
-    opacity: 1;
-    cursor: default;
-    border-style: solid;
-    padding: 1em;
-    text-align: left;
+   opacity: 1;
+   cursor: default;
+   border-style: solid;
+   padding: 1em;
+   text-align: left;
 }
-.note.add-btn:focus, 
+
+.note.add-btn:focus,
 .note.add-btn:hover,
 .control-side .btn:hover {
-    opacity: 1;
+   opacity: 1;
 }
+
 .note-head {
-    padding-bottom: .5em;
-    border-bottom: #ececec 1px solid;
-    display: flex;
-    justify-content: space-between;
+   padding-bottom: .5em;
+   border-bottom: var(--grey-border) 1px solid;
+   display: flex;
+   justify-content: space-between;
 }
+
 .note-body {
-    padding-top: .5em;
+   padding-top: .5em;
 }
 
 .btn {
-    cursor: pointer;
-    border: none;
-    padding: 0 5px;
-    background: none;
+   cursor: pointer;
+   border: none;
+   padding: 0 5px;
+   background: none;
 }
 
 .add-note {
-    font-size: 1.5em;
-    font-weight: bold;
+   font-size: 1.5em;
+   font-weight: bold;
 }
 
 .todolist {
-    list-style: none;
+   list-style: none;
 }
 
 .todolist .item.checked {
-    text-decoration: line-through;
-    color: var(--grey-text);
+   text-decoration: line-through;
+   color: var(--grey-text);
 }
+
 .todolist .item {
-    margin-bottom: .2em;
+   margin-bottom: .2em;
 }
+.todolist .item.etc {
+   padding-left: 1em;
+   font-size: 1.1em;
+}
+
 .control-side {
-    display: none;
+   display: none;
 }
+
 .control-side .btn {
-    opacity: .5;
+   opacity: .5;
 }
+.control-side .btn  i {
+   font-size: 1.25em;
+}
+
 .note:hover .control-side,
-.note:focus  .control-side {
-    display: block;
+.note:focus .control-side {
+   display: block;
 }
 
 .popup-wrapp {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom, rgb(151, 151, 151), transparent 50%);
-    z-index: 999;
+   position: absolute;
+   top: 0;
+   left: 0;
+   width: 100%;
+   height: 100%;
+   background: linear-gradient(to bottom, rgb(151, 151, 151), transparent 50%);
+   z-index: 999;
 }
 
 .popup {
-    min-width: 200px;
-    max-width: 400px;
-    margin: 10vh auto 0;
-    box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
+   min-width: 200px;
+   max-width: 400px;
+   margin: 10vh auto 0;
+   box-shadow: 0 0 40px rgba(0, 0, 0, 0.2);
 }
+
 .note-footer {
-    display: flex;
-    justify-content: space-between;
+   display: flex;
+   justify-content: space-between;
 }
+
 .note-footer .btn {
-    padding: .4em 1em;
+   padding: .4em 1em;
 }
+
 .btn.confirm {
-    background: var(--blue);
-    color: #fff;
+   background: var(--blue);
+   color: #fff;
 }
 
 .form-input {
-    width: 100%;
-    padding: .5em .2em;
-    margin: .2em 0;
-    border: none;
-    border-bottom: #ececec 1px solid;
-    font-size: 1em;
+   width: 100%;
+   padding: .5em .2em;
+   margin: .2em 0;
+   border: none;
+   border-bottom: var(--grey-border) 1px solid;
+   font-size: 1em;
 }
+
 .form-input.title {
-    font-weight: bold;
+   font-weight: bold;
 }
+
 .form-input.item {
-    border: none;
-    width: 90%;
+   border: none;
+   width: 90%;
+}
+
+.form-wrapp .note-footer {
+   padding-top: .5em;
+   border-top: solid 1px var(--grey-border);
 }
