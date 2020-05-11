@@ -54,8 +54,7 @@ Vue.component('note', {
    props: ['title', 'todolist', 'editable'],
    data: function () {
       return {
-         key: this.$vnode.key,
-         edit_item: false
+         key: this.$vnode.key
       }
    },
    created: function () {
@@ -102,21 +101,10 @@ Vue.component('note', {
                     <div class="note-head">
                         <div class="title-side"><h4>{{title}}</h4></div>
                         <div class="control-side">
-<<<<<<< HEAD
                         <router-link :to="'/edit/'+key" class="btn btn-icon"><i class="fa fa-pencil" aria-hidden="true"></i></router-link>
-=======
-                            <button
-                                 v-if="!this.editable"
-                                 class="btn btn-icon"
-                                 v-on:click="edit_note(key)"
-                                 title="Редактировать">
-                                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                            </button>
->>>>>>> 4c8c1e99d3f1dbe3e57b354355f4b4fd203fde1f
                             <button
                                 class="btn btn-icon"
-                                v-on:click="delete_note(key)"
-                                 title="Удалить">
+                                v-on:click="delete_note(key)">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -137,27 +125,10 @@ Vue.component('note', {
                                         :checked="item.isDone"
                                         :disabled="!editable">
                                         {{item.title}}
-                                       
                                 </label>
-                                 <input v-show="edit_item == i" type="text">
-                           <div v-if="editable" class="control-side list">
-                               <button
-                                    v-if="!this.editable"
-                                    class="btn btn-icon"
-                                    v-on:click="edit_item = i"
-                                    title="Редактировать">
-                                       <i class="fa fa-pencil" aria-hidden="true"></i>
-                               </button>
-                               <button
-                                   class="btn btn-icon"
-                                   v-on:click="delete_item(i)"
-                                    title="Удалить">
-                                       <i class="fa fa-trash" aria-hidden="true"></i>
-                               </button>
-                           </div>
                             </li>
-                           <li v-if="!editable && todolist.length > 4" class="item etc">...</li>
-                        </ul> 
+                           <li v-if="todolist.length > 4" class="item etc">...</li>
+                        </ul>
                     </div>
                 </div>`
 });
@@ -175,7 +146,6 @@ Vue.component('add-note', {
       }
    },
    created: function () {
-<<<<<<< HEAD
       if (this.edit) {
          this.isActive = true;
          this.newNoteTitle = this.edit.title;
@@ -183,10 +153,6 @@ Vue.component('add-note', {
             ...el,
             editing: false
          }));
-=======
-      if (this.isedit) {
-         this.newItems = this.edit.notes
->>>>>>> 4c8c1e99d3f1dbe3e57b354355f4b4fd203fde1f
       }
    },
    methods: {
@@ -258,11 +224,7 @@ Vue.component('add-note', {
    computed: {},
    template: `<div class="note add-btn" :class="{active: isActive}">
                     <div v-if="isActive" class="form-wrapp">
-<<<<<<< HEAD
                         <h3 v-if="edit">Редактирование заметки</h3>
-=======
-                        <h3 v-if="isedit">Редактирование заметки</h3>
->>>>>>> 4c8c1e99d3f1dbe3e57b354355f4b4fd203fde1f
                         <h3 v-else>Добавление заметки</h3>
                         <input type="text" id="add-note-title" v-model="newNoteTitle" v-on:blur="isReady" v-on:keyup.enter="focusInput" class="form-input title" placeholder="Заголовок">
                         <ul class="todolist">
