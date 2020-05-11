@@ -33,7 +33,7 @@ const app = new Vue({
                   isDone: false
                     },
                {
-                  title: 'Сделать БГД',
+                  title: 'Сделать ГД',
                   isDone: true
                     },
                {
@@ -45,19 +45,21 @@ const app = new Vue({
                   isDone: true
                     },
                {
-                  title: 'Сделать ЗИКл',
+                  title: 'Сделать МНО',
                   isDone: true
                     },
                {
-                  title: 'Сделать ЗИКл',
+                  title: 'Сделать ПРС',
                   isDone: true
                     },
                 ]
             }
-        ]
+        ],
+      editNote: false,
+      isReadyForSave: false
    },
    created: function () {
-      this.currpage = this.pages.home
+      this.currentPage = {page: this.pages.home, title: 'To Do Vue'}
    },
    methods: {
       showPopup(data) {
@@ -77,7 +79,26 @@ const app = new Vue({
          this.popup = false
       },
       pushNote(data) {
-
+         this.notes.push(data);
+      },
+      editPage: function(data) {
+         this.editNote = this.notes[data.key];         
+         this.currentPage = {page: this.pages.note, title: 'Редактирование • '+this.editNote.title};
+      }
+   },
+   computed: {
+      currentPage: {
+         get: function() {
+            return {page: this.currpage, title: document.title}
+         },
+         set: function(val) {
+            this.currpage = val.page;
+            window.history.pushState(val, val.title, '');
+            document.title = val.title
+         }
       }
    }
 });
+window.onpopstate = function(event) {
+   app.currentPage = event.state;
+};

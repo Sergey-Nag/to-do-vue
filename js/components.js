@@ -2,7 +2,8 @@ Vue.component('note', {
    props: ['title', 'todolist', 'editable'],
    data: function () {
       return {
-         key: this.$vnode.key
+         key: this.$vnode.key,
+         edit_item: false
       }
    },
    created: function () {
@@ -32,6 +33,11 @@ Vue.component('note', {
                id: key
             }
          })
+      },
+      edit_note: function(key) {
+         this.$emit('edit-note', {
+            key: key
+         });
       }
    },
    computed: {
@@ -45,13 +51,16 @@ Vue.component('note', {
                         <div class="title-side"><h4>{{title}}</h4></div>
                         <div class="control-side">
                             <button
-                                class="btn btn-icon"
-                                v-on:click="edit_note(key)">
+                                 v-if="!this.editable"
+                                 class="btn btn-icon"
+                                 v-on:click="edit_note(key)"
+                                 title="Редактировать">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                             </button>
                             <button
                                 class="btn btn-icon"
-                                v-on:click="delete_note(key)">
+                                v-on:click="delete_note(key)"
+                                 title="Удалить">
                                     <i class="fa fa-trash" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -72,15 +81,33 @@ Vue.component('note', {
                                         :checked="item.isDone"
                                         :disabled="!editable">
                                         {{item.title}}
+                                       
                                 </label>
+                                 <input v-show="edit_item == i" type="text">
+                           <div v-if="editable" class="control-side list">
+                               <button
+                                    v-if="!this.editable"
+                                    class="btn btn-icon"
+                                    v-on:click="edit_item = i"
+                                    title="Редактировать">
+                                       <i class="fa fa-pencil" aria-hidden="true"></i>
+                               </button>
+                               <button
+                                   class="btn btn-icon"
+                                   v-on:click="delete_item(i)"
+                                    title="Удалить">
+                                       <i class="fa fa-trash" aria-hidden="true"></i>
+                               </button>
+                           </div>
                             </li>
-                           <li v-if="todolist.length > 4" class="item etc">...</li>
-                        </ul>
+                           <li v-if="!editable && todolist.length > 4" class="item etc">...</li>
+                        </ul> 
                     </div>
                 </div>`
 });
 
 Vue.component('add-note', {
+   props: ['edit'],
    data: function () {
       return {
          isActive: false,
@@ -90,8 +117,10 @@ Vue.component('add-note', {
          newItems: []
       }
    },
-   updated: function () {
-
+   created: function () {
+      if (this.isedit) {
+         this.newItems = this.edit.notes
+      }
    },
    methods: {
       // Add new item to list
@@ -140,40 +169,49 @@ Vue.component('add-note', {
       },
       removeItem: function(i) {
          this.newItems.splice(i, 1);
+      },
+      addNote: function() {
+         if (this.newNoteTitle != '' && this.newItems.length > 0) {
+            this.$emit('add-note', {
+               title: this.newNoteTitle,
+               todo_items: this.newItems
+            });
+            this.newNoteTitle = '';
+            this.newItems = [];
+         }
       }
    },
    computed: {},
    template: `<div class="note add-btn" :class="{active: isActive}">
                     <div v-if="isActive" class="form-wrapp">
-                        <h3>Добавление заметки</h3>
+                        <h3 v-if="isedit">Редактирование заметки</h3>
+                        <h3 v-else>Добавление заметки</h3>
                         <input type="text" id="add-note-title" v-model="newNoteTitle" v-on:blur="isReady" v-on:keyup.enter="focusInput" class="form-input title" placeholder="Заголовок">
                         <ul class="todolist">
                            <li class="item" v-for="(item, i) in newItems">
                                  <label 
-                                    :for="'todo-new'+i">
+                                    :for="'todo-new'+i"
+                                    v-on:click="item.isDone = !item.isDone">
                                     <input
                                         type="checkbox"
                                         :id="'todo-new'+i"
                                         :checked="item.isDone">
-
-                                        {{item.editing? '' : item.title}}
-
-                                       <input v-show="item.editing" id="add-item-input" v-on:keyup.enter="checkItem" v-on:keyup.delete.prevent="returnItem" v-model="item.title" type="text" class="form-input item" placeholder="+ Добавить пункт">
+                                        {{item.title}}
 
                                  </label>
                                  <button class="btn btn-icon" v-on:click="editItem(i)">
                                        <i class="fa fa-pencil" aria-hidden="true"></i>
                                  </button>
                                  <button class="btn btn-icon" v-on:click="removeItem(i)">
-                                       <i class="fa fa-close" aria-hidden="true"></i>
-                                  </button>
+                                    <i class="fa fa-close" aria-hidden="true"></i>
+                                 </button>
                            </li>
 
                             <li class="item" >
                                 <input type="checkbox" disabled><input id="add-item-input" v-on:keyup.enter="checkItem" v-on:keyup.delete.prevent="returnItem" v-model="newItem" type="text" class="form-input item" placeholder="+ Добавить пункт">
                                  <button class="btn btn-icon" v-on:click="checkItem">
-                                       <i class="fa fa-plus" aria-hidden="true"></i>
-                                  </button>
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                 </button>
                             </li>
 
                            <li v-if="newItem != ''" class="item">
@@ -184,7 +222,7 @@ Vue.component('add-note', {
                         <span class="hint">Добавляйте новые элементы <code>Enter</code>, возвращайтесь к предыдущим <code>Backspace</code></span>
                         <div class="note-footer">
                             <button class="btn cancel" v-on:click="cancel()"><i class="fa fa-close" aria-hidden="true"></i> Отмена</button>
-                            <button class="btn confirm" :disabled="!isReadyForConfirm"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</button>
+                            <button class="btn confirm" :disabled="!isReadyForConfirm" v-on:click="addNote()"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</button>
                         </div>
                     </div>
                     <div v-else v-on:click.prevent="isActive = true">

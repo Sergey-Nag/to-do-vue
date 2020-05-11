@@ -16,40 +16,26 @@
 
       <div class="main">
          <div class="notes-wrapp" id="view">
+           
             <template v-if="currpage == 'main-page'">
-               <h1 class="title">Мои заметки <span class="notes-length">{{ notes.length }}</span></h1>
+               <h1 class="title">Мои заметки • <span class="notes-length">{{ notes.length }}</span></h1>
 
-               <note @show-popup="showPopup" v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
+               <note @show-popup="showPopup" @edit-note="editPage"  v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
 
-               <add-note @add-note="pushNote"></add-note>
+               <add-note @add-note="pushNote" ></add-note>
             </template>
 
 
             <template v-else-if="currpage == 'note-page'">
-               <h1 class="title">Заметка <span class="notes-length">{{ notes.length }}</span></h1>
-
-               <note v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items"></note>
-
-               <div class="note">
-                  <div class="note-head">
-                     <h4>Test</h4>
-                  </div>
-                  <div class="note-body">
-                     <p>asdjasljdfhkas</p>
-                  </div>
+               <a href="javascript:history.back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Вернуться к списку</a>
+               <h1 class="title">{{currentPage.title}} <span class="notes-length"></span></h1>
+               
+               <note @show-popup="showPopup" @edit-note="editPage" :key="1" :title='editNote.title' :todolist="editNote.todo_items" :editable="true"></note>               
+               
+               <div class="note-footer">
+                  <button class="btn cancel" v-on:click="cancel()"><i class="fa fa-close" aria-hidden="true"></i> Отмена</button>
+                  <button class="btn confirm" :disabled="!isReadyForSave" v-on:click="updateNote()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить</button>
                </div>
-               <div class="note">
-                  <div class="note-head">
-                     <h4>Test</h4>
-                  </div>
-                  <div class="note-body">
-                     <ul class="todolist">
-                        <li class=""><input type="checkbox" id="todo-1"> <label for="todo-1">Hello</label></li>
-                        <li class=""><input type="checkbox" id="todo-2"> <label for="todo-2">Hello</label></li>
-                     </ul>
-                  </div>
-               </div>
-
             </template>
 
          </div>
