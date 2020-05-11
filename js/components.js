@@ -5,9 +5,6 @@ var mainPage = Vue.component('main-page', {
          key: this.$vnode.key,
       }
    },
-   mounted: function () {
-      console.log(this.popupMain)
-   },
    methods: {
       showPopup(data) {
          this.$emit('show-popup', data);
@@ -41,11 +38,14 @@ var editPage = Vue.component('edit-page', {
       pushNote(data) {
          this.notes.push(data);
       },
+      saveNote(data) {
+         this.notes[data.id] = data.note;
+      }
    },
    template: `<div className="page-wrapp">
                <router-link to="/" class="btn"><i class="fa fa-chevron-left" aria-hidden="true"></i> Вернуться к списку</router-link>
                <h1 class="title">Заметка <span class="notes-length"></span></h1>
-               <add-note @add-note="pushNote" :edit="editNote"></add-note>
+               <add-note @save-note="saveNote" :edit="editNote"></add-note>
             </div>`
 });
 
@@ -219,6 +219,15 @@ Vue.component('add-note', {
             this.newNoteTitle = '';
             this.newItems = [];
          }
+      },
+      saveNote: function () {
+         this.$emit('save-note', {
+            note: {
+               title: this.newNoteTitle,
+               todo_items: this.newItems.map((el)=> {return {title: el.title, isDone: el.isDone}})
+            },
+            id: this.$route.params.id
+         });
       }
    },
    computed: {},
@@ -262,7 +271,7 @@ Vue.component('add-note', {
                         <span class="hint">Добавляйте новые элементы <code>Enter</code>, возвращайтесь к предыдущим <code>Backspace</code></span>
                         <div class="note-footer">
                             <button class="btn cancel" v-on:click="cancel()"><i class="fa fa-close" aria-hidden="true"></i> Отмена</button>
-                            <button v-if="edit" class="btn confirm" :disabled="!isReadyForConfirm" v-on:click="addNote()"><i class="fa fa-floppy-o"></i> Сохранить</button>
+                            <button v-if="edit" class="btn confirm" v-on:click="saveNote()"><i class="fa fa-floppy-o"></i> Сохранить</button>
                             <button v-else class="btn confirm" :disabled="!isReadyForConfirm" v-on:click="addNote()"><i class="fa fa-plus" aria-hidden="true"></i> Добавить</button>
                         </div>
                     </div>
