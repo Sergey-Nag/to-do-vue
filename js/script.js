@@ -1,11 +1,22 @@
+const routes = [
+   {
+      path: '/',
+      component: mainPage
+   },
+   {
+      path: '/edit/:id',
+      component: editPage
+   }
+]
+
+const router = new VueRouter({
+   routes
+});
+
 const app = new Vue({
    el: '#app',
+   router,
    data: {
-      pages: {
-         home: 'main-page',
-         note: 'note-page'
-      },
-      currpage: false,
       popup: false,
       notes: [
          {
@@ -57,9 +68,7 @@ const app = new Vue({
         ],
       editNote: false
    },
-   created: function () {
-      this.currpage = this.pages.home
-   },
+   created: function () {},
    methods: {
       showPopup(data) {
          this.popup = data
@@ -77,13 +86,5 @@ const app = new Vue({
       clearPopup() {
          this.popup = false
       },
-      pushNote(data) {
-         this.notes.push(data);
-      },
-      editPage: function(data) {
-         this.currpage = 'note-page';
-         this.editNote = this.notes[data.key];
-         window.history.pushState(data, this.editNote.title);
-      }
    }
 });
