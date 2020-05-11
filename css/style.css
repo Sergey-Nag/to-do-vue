@@ -113,6 +113,9 @@ body {
 .control-side {
    display: none;
 }
+.control-side.list {
+   float: right;
+}
 
 .btn.btn-icon  {
    opacity: .5;

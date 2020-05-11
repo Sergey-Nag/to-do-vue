@@ -15,7 +15,34 @@
       <popup v-show="popup" :data-popup="popup" @done-popup="donePopup" @close-popup="clearPopup"></popup>
 
       <div class="main">
+<<<<<<< HEAD
            <router-view :notes="notes" @show-popup="showPopup" :popup-main="popup"></router-view>
+=======
+         <div class="notes-wrapp" id="view">
+           
+            <template v-if="currpage == 'main-page'">
+               <h1 class="title">Мои заметки • <span class="notes-length">{{ notes.length }}</span></h1>
+
+               <note @show-popup="showPopup" @edit-note="editPage"  v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
+
+               <add-note @add-note="pushNote" ></add-note>
+            </template>
+
+
+            <template v-else-if="currpage == 'note-page'">
+               <a href="javascript:history.back()"><i class="fa fa-arrow-left" aria-hidden="true"></i> Вернуться к списку</a>
+               <h1 class="title">{{currentPage.title}} <span class="notes-length"></span></h1>
+               
+               <note @show-popup="showPopup" @edit-note="editPage" :key="1" :title='editNote.title' :todolist="editNote.todo_items" :editable="true"></note>               
+               
+               <div class="note-footer">
+                  <button class="btn cancel" v-on:click="cancel()"><i class="fa fa-close" aria-hidden="true"></i> Отмена</button>
+                  <button class="btn confirm" :disabled="!isReadyForSave" v-on:click="updateNote()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Сохранить</button>
+               </div>
+            </template>
+
+         </div>
+>>>>>>> 4c8c1e99d3f1dbe3e57b354355f4b4fd203fde1f
       </div>
 
    </div>

@@ -44,7 +44,7 @@ const app = new Vue({
                   isDone: false
                     },
                {
-                  title: 'Сделать БГД',
+                  title: 'Сделать ГД',
                   isDone: true
                     },
                {
@@ -56,19 +56,26 @@ const app = new Vue({
                   isDone: true
                     },
                {
-                  title: 'Сделать ЗИКл',
+                  title: 'Сделать МНО',
                   isDone: true
                     },
                {
-                  title: 'Сделать ЗИКл',
+                  title: 'Сделать ПРС',
                   isDone: true
                     },
                 ]
             }
         ],
-      editNote: false
+      editNote: false,
+      isReadyForSave: false
    },
+<<<<<<< HEAD
    created: function () {},
+=======
+   created: function () {
+      this.currentPage = {page: this.pages.home, title: 'To Do Vue'}
+   },
+>>>>>>> 4c8c1e99d3f1dbe3e57b354355f4b4fd203fde1f
    methods: {
       showPopup(data) {
          this.popup = data
@@ -86,5 +93,30 @@ const app = new Vue({
       clearPopup() {
          this.popup = false
       },
+<<<<<<< HEAD
+=======
+      pushNote(data) {
+         this.notes.push(data);
+      },
+      editPage: function(data) {
+         this.editNote = this.notes[data.key];         
+         this.currentPage = {page: this.pages.note, title: 'Редактирование • '+this.editNote.title};
+      }
+   },
+   computed: {
+      currentPage: {
+         get: function() {
+            return {page: this.currpage, title: document.title}
+         },
+         set: function(val) {
+            this.currpage = val.page;
+            window.history.pushState(val, val.title, '');
+            document.title = val.title
+         }
+      }
+>>>>>>> 4c8c1e99d3f1dbe3e57b354355f4b4fd203fde1f
    }
 });
+window.onpopstate = function(event) {
+   app.currentPage = event.state;
+};
