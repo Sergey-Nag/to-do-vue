@@ -15,7 +15,7 @@ var mainPage = Vue.component('main-page', {
    },
    template: `<div className="page-wrapp">
                <h1 class="title">Мои заметки <span class="notes-length">{{ notes.length }}</span></h1>
-                  <note @show-popup="showPopup" v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items" :editable="false"></note>
+                  <note @show-popup="showPopup" v-for="(note, i) in notes" :key="i" :title='note.title' :todolist="note.todo_items"></note>
                   <add-note @add-note="pushNote"></add-note>
                </div>`
 });
@@ -40,18 +40,26 @@ var editPage = Vue.component('edit-page', {
       },
       saveNote(data) {
          this.notes[data.id] = data.note;
+         this.popup = {
+            question: 'Сохранено',
+            title: 'Сохранено',
+            note_id: 0,
+            emit: {
+               name: 'delete-note',
+            }
+         }
       }
    },
    template: `<div className="page-wrapp">
                <router-link to="/" class="btn"><i class="fa fa-chevron-left" aria-hidden="true"></i> Вернуться к списку</router-link>
                <h1 class="title">Заметка <span class="notes-length"></span></h1>
-               <add-note @save-note="saveNote" :edit="editNote"></add-note>
+               <add-note @show-popup="showPopup" @save-note="saveNote" :edit="editNote"></add-note>
             </div>`
 });
 
 
 Vue.component('note', {
-   props: ['title', 'todolist', 'editable'],
+   props: ['title', 'todolist'],
    data: function () {
       return {
          key: this.$vnode.key
@@ -92,7 +100,6 @@ Vue.component('note', {
       }
    },
    computed: {
-      // If editable == false > return last 4 else return full todo list
       returnRightList: function () {
          return this.editable ? this.todolist : this.todolist.slice(0, 4);
       }
@@ -117,13 +124,12 @@ Vue.component('note', {
                                 :class="{ checked: item.isDone}" >
 
                                 <label 
-                                    :for="'todo'+key+i"
-                                    v-on:click.prevent="(editable ? check(i):'')">
+                                    :for="'todo'+key+i">
                                     <input
                                         type="checkbox"
                                         :id="'todo'+key+i"
                                         :checked="item.isDone"
-                                        :disabled="!editable">
+                                        disabled="true">
                                         {{item.title}}
                                 </label>
                             </li>
@@ -224,9 +230,22 @@ Vue.component('add-note', {
          this.$emit('save-note', {
             note: {
                title: this.newNoteTitle,
-               todo_items: this.newItems.map((el)=> {return {title: el.title, isDone: el.isDone}})
+               todo_items: this.newItems.map((el) => {
+                  return {
+                     title: el.title,
+                     isDone: el.isDone
+                  }
+               })
             },
             id: this.$route.params.id
+         });
+         this.$emit('show-popup', {
+            question: 'Сохранено',
+            title: 'Сохранено',
+            note_id: 0,
+            emit: {
+               name: 'delete-note',
+            }
          });
       }
    },
